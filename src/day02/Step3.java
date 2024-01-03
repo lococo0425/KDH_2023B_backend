@@ -59,7 +59,7 @@ public class Step3 { //c s
         
         //8. 입력받은 float 반환
         float f = scanner.nextFloat();        System.out.println("f = " + f);
-        
+        //커밋용
         //9.입력받은 double 반환
         double d = scanner.nextDouble();        System.out.println("d = " + d);
 
