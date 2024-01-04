@@ -144,16 +144,16 @@ public class Step3 {
 //        System.out.printf("총점 : %.0f , 평균 : %.2f", 총점,평균 );
 
 //문제16 : 아이디[문자열] 와 비밀번호[문자열] 를 입력받아 아이디가 'admin' 이고 비밀번호가 '1234' 와 일치하면 '로그인성공' 아니면 '로그인실패' 출력
-//        System.out.print("아이디를 입력하세요");
-//        String ID = scanner.nextLine();
-//        System.out.print("비밀번호를 입력하세요");
-//        String Password = scanner.nextLine();
-//
-//        if(ID.equals("admin") && Password.equals("1234")){
-//            System.out.println("로그인성공");
-//        }else {
-//            System.out.println("로그인실패");
-//        }
+        System.out.print("아이디를 입력하세요");
+        String ID = scanner.nextLine();
+        System.out.print("비밀번호를 입력하세요");
+        String Password = scanner.nextLine();
+
+        if(ID.equals("admin") && Password.equals("1234")){
+            System.out.println("로그인성공");
+        }else {
+            System.out.println("로그인실패");
+        }
 
 //문제17 : 3개의 정수형으로 입력받아 가장 큰수 출력
 //        System.out.print("num1 을 입력하세요 : ");
@@ -167,28 +167,28 @@ public class Step3 {
 //
 //        System.out.printf("가장 큰수는 : %d 입니다. ",maxnum);
 
-        System.out.print("num1 을 입력하세요 : ");
-        int num1 = scanner.nextInt();
-        System.out.print("num2 을 입력하세요 : ");
-        int num2 = scanner.nextInt();
-        System.out.print("num3 을 입력하세요 : ");
-        int num3 = scanner.nextInt();
-
-        if(num1<num2){
-            int temp =num1;
-                num1=num2;
-                num2=temp;
-        }
-        if (num1<num3) {
-            int temp =num1;
-                num1= num3;
-                num3= temp;
-        }
-        if (num2<num3) {
-            int temp =num2;
-                num2=num3;
-                num3=temp;
-        }
-        System.out.println("가장 큰 수는 : " + num1);
+//        System.out.print("num1 을 입력하세요 : ");
+//        int num1 = scanner.nextInt();
+//        System.out.print("num2 을 입력하세요 : ");
+//        int num2 = scanner.nextInt();
+//        System.out.print("num3 을 입력하세요 : ");
+//        int num3 = scanner.nextInt();
+//
+//        if(num1<num2){
+//            int temp =num1;
+//                num1=num2;
+//                num2=temp;
+//        }
+//        if (num1<num3) {
+//            int temp =num1;
+//                num1= num3;
+//                num3= temp;
+//        }
+//        if (num2<num3) {
+//            int temp =num2;
+//                num2=num3;
+//                num3=temp;
+//        }
+//        System.out.println("가장 큰 수는 : " + num1);
     }
 }
