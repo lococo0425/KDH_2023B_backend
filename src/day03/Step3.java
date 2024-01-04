@@ -27,6 +27,7 @@ public class Step3 {
 //        String 출력4 = " ";
 //        출력4 = (정수4%11==0)? (정수4%2==0) ? "O":"X":"X";
 //        System.out.println("11배수 이면서 짝수 : " + 출력4);
+
 //문제5 : 두개의 정수형으로 입력받아 더 큰수 출력 하시오.
 //        System.out.print("숫자 1을 입력하세요 :  ");
 //        int num1 = scanner.nextInt();
@@ -72,6 +73,7 @@ public class Step3 {
 //        int 표준체중 = (int) ((키-100)*0.9);
 //
 //        System.out.println("표준 체중 : "+표준체중);
+
 //문제10 : 키와 몸무게를 입력받아 BMI 출력하기 , 소수점 둘째 자리 까지 출력하시오.
    //계산식) BMI 계산식 = > 몸무게 / ((키 / 100) * (키 / 100))
 //        System.out.print("키 : ");
@@ -82,6 +84,7 @@ public class Step3 {
 //        double BMI = 몸무게 / ((키 / 100) * (키 / 100));
 //
 //        System.out.printf("BMI = %.2f",BMI);
+
 //문제11 : inch 를 입력받아 cm 로 변환하기  , 소수점 둘째 자리까지 출력하시오.
   // 계산식) 1 inch -> 2.54cm
 //        System.out.println("inch 를 입력하세요");
@@ -104,9 +107,14 @@ public class Step3 {
 //        double 비율반영수행 = 수행평가 * 0.4;
 //
 //        System.out.printf("중간고사 : %.2f 기말고사 :%.2f 수행평가 : %.2f", 비율반영중간,비율반영기말,비율반영수행);
+
 //문제13 :  연산 순서 나열 하고 printf() 에 출력되는 x 와 y 값을 예측하시오.
 //   int x = 10;
 //   int y = x-- + 5 + --x;
+        //1. 초기 x 값 10 -> x-- : x 값 출력후 감소 => 10+5 + --x 상태 이때 x 값은 출력후 감소 했기 때문에 9
+        //2. 10+5+ --x -> --x : 값 감소 후 출력 => 현재 값 9인 상태에서 하나 감소 후 출력 = 8
+        //3. 고로 10 +5+8 이 되어서 y 값은 23 이다 된다.
+        //4. x의 경우 초기 값은 10 이었으니 연산후 남은 현재 x 값이 8 이다.
 //   System.out.printf(" x의 값 : %d , y의값 :  %d ", x, y);
         // x =8            y=10+5+8=23
 
@@ -134,6 +142,7 @@ public class Step3 {
 //        double 평균 = (국어+수학+영어)/3;
 //
 //        System.out.printf("총점 : %.0f , 평균 : %.2f", 총점,평균 );
+
 //문제16 : 아이디[문자열] 와 비밀번호[문자열] 를 입력받아 아이디가 'admin' 이고 비밀번호가 '1234' 와 일치하면 '로그인성공' 아니면 '로그인실패' 출력
 //        System.out.print("아이디를 입력하세요");
 //        String ID = scanner.nextLine();
@@ -147,6 +156,17 @@ public class Step3 {
 //        }
 
 //문제17 : 3개의 정수형으로 입력받아 가장 큰수 출력
+//        System.out.print("num1 을 입력하세요 : ");
+//        int num1 = scanner.nextInt();
+//        System.out.print("num2 을 입력하세요 : ");
+//        int num2 = scanner.nextInt();
+//        System.out.print("num3 을 입력하세요 : ");
+//        int num3 = scanner.nextInt();
+//
+//        int maxnum = num1 > num2 ? num1 > num3 ? num1 : num3 : num2 > num3 ? num2 : num3;
+//
+//        System.out.printf("가장 큰수는 : %d 입니다. ",maxnum);
+
         System.out.print("num1 을 입력하세요 : ");
         int num1 = scanner.nextInt();
         System.out.print("num2 을 입력하세요 : ");
@@ -154,8 +174,21 @@ public class Step3 {
         System.out.print("num3 을 입력하세요 : ");
         int num3 = scanner.nextInt();
 
-        int maxnum = num1 > num2 ? num1 > num3 ? num1 : num3 : num2 > num3 ? num2 : num3;
-
-        System.out.printf("가장 큰수는 : %d 입니다. ",maxnum);
+        if(num1<num2){
+            int temp =num1;
+                num1=num2;
+                num2=temp;
+        }
+        if (num1<num3) {
+            int temp =num1;
+                num1= num3;
+                num3= temp;
+        }
+        if (num2<num3) {
+            int temp =num2;
+                num2=num3;
+                num3=temp;
+        }
+        System.out.println("가장 큰 수는 : " + num1);
     }
 }
