@@ -1,4 +1,4 @@
-package 과제.ex6;
+package 과제1.ex6;
 
 public class Level1_6 {
 	

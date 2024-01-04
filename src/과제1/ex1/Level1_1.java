@@ -1,6 +1,4 @@
-package 과제.ex1;
-
-import java.util.Scanner;
+package 과제1.ex1;
 
 public class Level1_1 {
 	

@@ -1,4 +1,4 @@
-package 과제.ex8;
+package 과제1.ex8;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;

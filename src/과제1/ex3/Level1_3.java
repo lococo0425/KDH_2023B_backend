@@ -1,7 +1,6 @@
-package 과제.ex3;
+package 과제1.ex3;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Level1_3 {

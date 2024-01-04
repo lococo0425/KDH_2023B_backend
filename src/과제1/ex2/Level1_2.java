@@ -1,4 +1,4 @@
-package 과제.ex2;
+package 과제1.ex2;
 
 import java.time.LocalDateTime;
 

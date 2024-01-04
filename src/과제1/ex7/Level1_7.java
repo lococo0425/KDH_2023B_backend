@@ -1,4 +1,4 @@
-package 과제.ex7;
+package 과제1.ex7;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
