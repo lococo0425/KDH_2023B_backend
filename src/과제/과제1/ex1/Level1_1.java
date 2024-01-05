@@ -1,4 +1,4 @@
-package 과제1.ex1;
+package 과제.과제1.ex1;
 
 public class Level1_1 {
 	
