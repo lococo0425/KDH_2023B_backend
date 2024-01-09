@@ -1,6 +1,6 @@
 package day05;
 
-public class Step06_while99단 {
+public class Step06_while구구단 {
     public static void main(String[] args) {
         // while 문 구구단
         int i=1, j =1;
