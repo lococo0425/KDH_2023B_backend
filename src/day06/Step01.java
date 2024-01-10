@@ -1,5 +1,7 @@
 package day06;
 
+import java.util.Arrays;
+
 public class Step01 {
     public static void main(String[] args) {
         //p.149 null!!
@@ -61,7 +63,7 @@ public class Step01 {
                                                                             2.배열객체 = {204번지, null};        201번지
                                                                                            ↑
                    1.배열내 특정 항목 대입                                                    ↑
-                   array2[0] = "유재석"                                                     ↑
+                   array1[0] = "유재석"                                                     ↑
                                                                             1. 문자열(유재석)객체 =                 204번지
                    array2[0] = array1[1]
 
@@ -74,7 +76,8 @@ public class Step01 {
         System.out.println("array2[0] = " + array2[0]);
         array2[0] = "유재석";
         System.out.println("array2[0] = " + array2[0]);
-
+        array2[0]=array1[0];
+        System.out.println(Arrays.toString(array2));
     }
 
 }
