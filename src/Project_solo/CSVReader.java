@@ -22,6 +22,7 @@ public class CSVReader {
         }
     }
 
+
     public List<List<String>> readCSV(){
         List<List<String>> csvList = new ArrayList<>();
         File csv = new File("C:\\Users\\504\\Desktop\\KDH_2023B_backend\\KDH_2023B_backend\\src\\Project_solo\\KC_KOBIS_BOX_OFFIC_MOVIE_INFO_202309.csv");
