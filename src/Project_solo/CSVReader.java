@@ -80,8 +80,8 @@ public class CSVReader {
         try {
             return Integer.parseInt(s.trim());
         } catch (NumberFormatException e) {
-            // Handle the case where the string is not a valid integer
-            return 0; // or throw an exception, depending on your requirements
+
+            return 0;
         }
     }
 
@@ -89,8 +89,7 @@ public class CSVReader {
         try {
             return Double.parseDouble(s.trim());
         } catch (NumberFormatException e) {
-            // Handle the case where the string is not a valid double
-            return 0.0; // or throw an exception, depending on your requirements
+            return 0.0;
         }
     }
 
@@ -119,6 +118,7 @@ public class CSVReader {
                          String nationalityName, int totalScreenCount, double salesPrice, int viewingNumber,
                          double seoulSalesPrice, int seoulViewingNumber, String genreName, String gradeName,
                          String movieSubdivisionName) {
+
             this.no = no;
             this.movieName = movieName;
             this.directorName = directorName;
