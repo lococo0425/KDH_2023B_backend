@@ -1,64 +1,173 @@
+
 package Project_solo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Login {//class s
-    public static void main(String[] args) { //main s
-        Scanner scanner = new Scanner(System.in);
-        String id = "";
-        String pw = "";
-        List<String> memberList = new ArrayList<>();
-        List<String> idList = new ArrayList<>();
-        List<String> pwList = new ArrayList<>();
+public class Login {
+    static int memberNum =1;
+    static String id = "";
+    static String pw = "";
+    static List<Member1> memberList = new ArrayList<Member1>();
+    static boolean loginSuccess = false;
+    static boolean remove = false;
+    static Scanner scanner = new Scanner(System.in);
 
-    while(true) {//while s
-        //회원가입
-        System.out.print("ID 입력하세요 : ");
-        idList.add(id = scanner.nextLine());
-        System.out.print("PW 입력하세요 : ");
-        pwList.add(pw = scanner.nextLine());
-        String memberIDPW = "";
-        for (int i = 0; i < idList.size(); i++) {
-            memberIDPW = id + ":" + pw;
-            }
-        memberList.add(memberIDPW);
-        System.out.println(memberList);
+    public static void main(String[] args) {
+        while (true){
+            startText();
+            int ch = scanner.nextInt();
+            scanner.nextLine();
+            if(ch==1){
+                System.out.println("회원가입을 시작합니다.");
+                System.out.print("아이디를 입력하세요 : ");
+                id = scanner.nextLine();
+                System.out.println("비밀번호를 입력하세요 : ");
+                pw = scanner.nextLine();
+                if(idExists(id)) {
+                    System.out.println("아이디가 존재합니다. 다른아이디를 사용하세요");
+                }else  {
+                    Member1 newMember1 = new Member1(memberNum,id, pw);
+                    memberList.add(newMember1);
 
-        //로그인 검사.
-        System.out.println("로그인할 id를 입력하세요 : ");
-        String idIdentify = "";
-        idIdentify = scanner.nextLine();
-        System.out.println("로그인할 pw를 입력하세요 : ");
-        String pwIdentify = "";
-        pwIdentify = scanner.nextLine();
-        boolean found = false;
-        int i = 0;
-        for (i = 0; i < memberList.size(); i++) {
-                String[] part = memberList.get(i).split(":");
 
-                if (idIdentify.equals(part[0]) && pwIdentify.equals(part[1])) {
-                    System.out.println("id와 pw가 일치합니다.");
-                    found = true;
-                    break;
-                } else if (!idIdentify.equals(part[0]) && pwIdentify.equals(part[1])) {
-                    System.out.println("id가 일치하지 않습니다.");
-                    found = true;
-                    break;
-                } else if (idIdentify.equals(part[0]) && !pwIdentify.equals(part[1])) {
-                    System.out.println("pw가 일치하지 않습니다.");
-                    found = true;
-                    break;
                 }
+                System.out.println("회원가입이 완료 되었습니다.");
+                memberNum++;
+                for(int i=0; i< memberList.size();i++) {
+                    System.out.println(memberList.get(i));
+                } // 회원가입된 memberList 출력
+
+
+            }else if(ch==2){
+                System.out.println("로그인합니다.");
+                System.out.print("로그인 할 아이디를 입력하세요 : ");
+                String logInid = scanner.nextLine();
+                System.out.print("로그인 할 비밀번호를 입력하세요 : ");
+                String logInpw = scanner.nextLine();
+
+                loginSuccess = false;
+                for (int i = 0; i < memberList.size(); i++) {
+                    Member1 member = memberList.get(i);
+                    if (logInid.equals(member.getId()) && logInpw.equals(member.getPw())) {
+                        loginSuccess = true;
+                        break;
+                    }
+                }
+
+                if (loginSuccess) {
+                    System.out.println("로그인 성공!");
+                    while (true){
+                    afterLoginText();
+                    int afterch = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (afterch == 1) {
+                        System.out.println("내가본 영화");
+                    } else if (afterch == 2) {
+                        System.out.println("추천영화입니다.");
+                    } else if (afterch == 3) {
+                        break;
+                    }
+
+                }
+                } else {
+                    System.out.println("로그인 실패. 아이디 또는 비밀번호를 확인하세요.");
+                }
+
+
+            }else if(ch==3){
+                System.out.println("회원을 탈퇴하시겠습니까? : Y/N");
+                String yn = scanner.nextLine();
+                if(yn.equalsIgnoreCase("Y")){
+                    System.out.print("탈퇴할 아이디를 입력하세요");
+                    id=scanner.nextLine();
+                    System.out.print("탈퇴할 비밀번호를 입력하세요");
+                    pw=scanner.nextLine();
+
+                   deleteM();
+
+                    if(remove){
+                        System.out.println("회원 탈퇴 성공");
+                    }else{
+                        System.out.println("아이디 비밀번호가 다릅니다.");
+                    }
+                }
+
+            }else if(ch==4) {
+                System.out.println("회원을 출력합니다.");
+                System.out.println(memberList);
+
+            }else{
+                System.out.println("잘못된 입력입니다.");
             }
 
-        // 마지막 인덱스 처리
-            if (!found && memberList.size() > 0 && memberList.size() - 1 == i) {
-                System.out.println("없는 정보입니다.");
+        }
+    }
+
+
+
+    public static void startText() {
+        System.out.println("---------------------------------------------");
+        System.out.println("1. 회원가입  | 2. 로그인 |3. 회원탈퇴 | 4.회원출력");
+        System.out.println("---------------------------------------------");
+    }
+    public static void afterLoginText() {
+        System.out.println("---------------------------------");
+        System.out.println("1. 내영화 | 2. 추천영화 | 3. 로그아웃");
+        System.out.println("---------------------------------");
+    }
+    public static boolean idExists(String id){
+        for(int i=0; i< memberList.size();i++){
+            Member1 member1 = memberList.get(i);
+            if(id.equals(member1.getId())){
+                return true;
             }
+        }
+        return false;
+    }
+    public static void deleteM(){
+        for (int i = 0; i < memberList.size(); i++) {
+            Member1 member = memberList.get(i);
+            if (id.equals(member.getId()) && pw.equals(member.getPw())) {
+                memberList.remove(member);
+                remove = true;
+                break;
+            }
+        }
+    }
 
+}
 
-         }// while e
-    }//main e
-}// class e
+class Member1 {
+    private String id;
+    private String pw;
+
+    private int memberNum;
+    public Member1(int memberNum, String id, String pw) {
+        this.memberNum = memberNum;
+        this.id = id;
+        this.pw = pw;
+    }
+
+    @Override
+    public String toString() {
+        return "Member1{" +
+                "id='" + id + '\'' +
+                ", pw='" + pw + '\'' +
+                ", memberNum=" + memberNum +
+                '}';
+    }
+
+    public Object getId() {
+        return id;
+    }
+    public Object getPw(){
+        return pw;
+    }
+    public Object getmemberNum(){
+        return memberNum;
+    }
+}
+
