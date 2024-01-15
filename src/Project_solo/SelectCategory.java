@@ -1,22 +1,65 @@
+/*
 package Project_solo;
+
+import Project_solo.CSVReader;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class CSVReader {
+public class CSVReaderWithPagination {
+    private static final int ITEMS_PER_PAGE = 5;
 
     public static void main(String[] args) {
-        CSVReader csvReader = new CSVReader();
+        CSVReaderWithPagination csvReader = new CSVReaderWithPagination();
         List<MovieInfo> movieList = csvReader.readCSV();
 
-        for (MovieInfo movie : movieList) {
-            System.out.println(movie);
+        Scanner scanner = new Scanner(System.in);
+
+        int currentPage = 0;
+        while (true) {
+            System.out.println("현재 페이지: " + currentPage);
+            printMovies(movieList, currentPage);
+
+            System.out.println("이전 페이지: -1, 다음 페이지: 0, 종료: 1");
+            int userInput = scanner.nextInt();
+
+            if (userInput == 1) {
+                System.out.println("프로그램을 종료합니다.");
+                break;
+            } else if (userInput == -1) {
+                if (currentPage > 0) {
+                    currentPage--;
+                } else {
+                    System.out.println("더 이상 이전 페이지가 없습니다.");
+                }
+            } else if (userInput == 0) {
+                int totalPages = (int) Math.ceil((double) movieList.size() / ITEMS_PER_PAGE);
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                } else {
+                    System.out.println("더 이상 다음 페이지가 없습니다.");
+                }
+            } else {
+                System.out.println("올바르지 않은 입력입니다. 다시 시도하세요.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static void printMovies(List<MovieInfo> movieList, int currentPage) {
+        int startIdx = currentPage * ITEMS_PER_PAGE;
+        int endIdx = Math.min((currentPage + 1) * ITEMS_PER_PAGE, movieList.size());
+
+        for (int i = startIdx; i < endIdx; i++) {
+            System.out.println(movieList.get(i));
         }
     }
 
-    public List<MovieInfo> readCSV() {
-        List<MovieInfo> movieList = new ArrayList<>();
+    public List<CSVReader.MovieInfo> readCSV() {
+        List<CSVReader.MovieInfo> movieList = new ArrayList<>();
         File csv = new File("C:\\Users\\504\\Desktop\\KDH_2023B_backend\\KDH_2023B_backend\\src\\Project_solo\\KC_KOBIS_BOX_OFFIC_MOVIE_INFO_202309.csv");
         BufferedReader br = null;
         String line = "";
@@ -28,7 +71,7 @@ public class CSVReader {
 
             while ((line = br.readLine()) != null) {
                 String[] lineArr = line.split(",");
-                MovieInfo movieInfo = createMovieInfo(lineArr);
+                CSVReader.MovieInfo movieInfo = createMovieInfo(lineArr);
                 movieList.add(movieInfo);
             }
         } catch (FileNotFoundException e) {
@@ -48,7 +91,7 @@ public class CSVReader {
         return movieList;
     }
 
-    private MovieInfo createMovieInfo(String[] lineArr) {
+    private CSVReader.MovieInfo createMovieInfo(String[] lineArr) {
         // Assuming the order of fields matches the CSV header
         int no = parseInteger(lineArr[0]);
 
@@ -71,7 +114,7 @@ public class CSVReader {
         String gradeName = lineArr.length > 16 ? lineArr[16] : "";
         String movieSubdivisionName = lineArr.length > 17 ? lineArr[17] : "";
 
-        return new MovieInfo(no, movieName, directorName, makerName, incomeCompanyName, distributionCompanyName,
+        return new CSVReader.MovieInfo(no, movieName, directorName, makerName, incomeCompanyName, distributionCompanyName,
                 openingDate, movieTypeName, movieStyleName, nationalityName, totalScreenCount, salesPrice,
                 viewingNumber, seoulSalesPrice, seoulViewingNumber, genreName, gradeName, movieSubdivisionName);
     }
@@ -93,6 +136,9 @@ public class CSVReader {
         }
     }
 
+    private static class movieCateList{
+
+    }
     private static class MovieInfo {
         private int no;
         private String movieName;
@@ -139,6 +185,8 @@ public class CSVReader {
             this.movieSubdivisionName = movieSubdivisionName;
         }
 
+
+
         @Override
         public String toString() {
             return "MovieInfo{" +
@@ -163,4 +211,4 @@ public class CSVReader {
                     '}';
         }
     }
-}
+}*/
