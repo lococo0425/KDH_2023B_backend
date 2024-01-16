@@ -6,22 +6,26 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CSVReaderWithPagination {
-    private static final int PAGE =5;
+    private static final int ITEMS_PER_PAGE = 5;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         CSVReaderWithPagination csvReader = new CSVReaderWithPagination();
         List<MovieInfo> movieList = csvReader.readCSV();
 
+        List<MovieInfo> selectedGenreMovies = new ArrayList<>();
+
+        printAllMovies(movieList);
         int page = 0;
         while (true) {
             System.out.println("현재 페이지: " + page);
-            printMovies(movieList, page);
+            printMovies(selectedGenreMovies, page);
 
-            System.out.println("이전 페이지: -1, 다음 페이지: 0, 특정 장르 보기: 1, 종료: 2");
+            System.out.println("이전 페이지: -1, 다음 페이지: 0, 특정 장르 보기: 1, 내가 선택한 장르 전체보기: 2, 종료: 3");
             int userInput = scanner.nextInt();
             scanner.nextLine();
 
-            if (userInput == 2) {
+            if (userInput == 3) {
                 System.out.println("프로그램을 종료합니다.");
                 break;
             } else if (userInput == -1) {
@@ -31,7 +35,7 @@ public class CSVReaderWithPagination {
                     System.out.println("이전 페이지가 없습니다.");
                 }
             } else if (userInput == 0) {
-                int totalPages = (int) Math.ceil((double) movieList.size() / PAGE);
+                int totalPages = (int) Math.ceil((double) selectedGenreMovies.size() / ITEMS_PER_PAGE);
                 if (page < totalPages - 1) {
                     page++;
                 } else {
@@ -39,9 +43,11 @@ public class CSVReaderWithPagination {
                 }
             } else if (userInput == 1) {
                 System.out.print("장르를 입력하세요: ");
-                String genreSearch = scanner.nextLine();
-                printGenre(movieList, genreSearch);
-
+                String selectedGenre = scanner.nextLine();
+                selectedGenreMovies = filterMoviesByGenre(movieList, selectedGenre);
+                page = 0; // 새로운 장르를 선택할 때 페이지를 초기화합니다.
+            } else if (userInput == 2) {
+                printAllMovies(selectedGenreMovies);
             } else {
                 System.out.println("올바르지 않은 입력입니다. 다시 시도하세요.");
             }
@@ -49,33 +55,30 @@ public class CSVReaderWithPagination {
 
         scanner.close();
     }
-    private class seletGE{
-        List<seletGE>seletGES=new ArrayList<>();
-    }
-    public static void selectGeMovie(List<seletGE> seletGES,int page){
-        int start = page* PAGE;
-        int end = Math.min((page+1)*PAGE, seletGES.size());
-
-        for(int i=start;i<end;i++){
-            System.out.println(seletGES.get(i));
-        }
-    }
 
     public static void printMovies(List<MovieInfo> movieList, int page) {
-        int start = page * PAGE;
-        int end = Math.min((page + 1) * PAGE, movieList.size());
+        int start = page * ITEMS_PER_PAGE;
+        int end = Math.min((page + 1) * ITEMS_PER_PAGE, movieList.size());
 
         for (int i = start; i < end; i++) {
             System.out.println(movieList.get(i));
         }
     }
 
-    public static void printGenre(List<MovieInfo> movieList, String genre) {
+    public static void printAllMovies(List<MovieInfo> movieList) {
+        for (MovieInfo movie : movieList) {
+            System.out.println(movie);
+        }
+    }
+
+    public static List<MovieInfo> filterMoviesByGenre(List<MovieInfo> movieList, String genre) {
+        List<MovieInfo> filteredMovies = new ArrayList<>();
         for (MovieInfo movie : movieList) {
             if (movie.genreName.equals(genre)) {
-                System.out.println(movie);
+                filteredMovies.add(movie);
             }
         }
+        return filteredMovies;
     }
     public List<MovieInfo> readCSV() {
         List<MovieInfo> movieList = new ArrayList<>();
