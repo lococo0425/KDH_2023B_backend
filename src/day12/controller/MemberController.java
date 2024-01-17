@@ -50,6 +50,6 @@ public class MemberController {
 
     public String searchPw(MemberDto memberDto){//비밀번호 찾기
         String result = MemberDao.getInstance().searchPw(memberDto);
-        return null;
+        return result;
     }
 }

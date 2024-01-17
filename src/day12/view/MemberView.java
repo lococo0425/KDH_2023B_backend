@@ -94,8 +94,12 @@ public class MemberView {
         MemberDto memberDto = new MemberDto();
         memberDto.setId(id);    memberDto.setPhone(phone);
 
-        //컨트롤에 전달
+        //컨트롤에 전달 & 받은값 출력
         String result = MemberController.getInstance().searchPw(memberDto);
+
+        if(result!=null){
+            System.out.println(result);
+        }
 
     }
 }

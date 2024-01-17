@@ -64,11 +64,17 @@ public class MemberDao {
 
 
     public String searchPw(MemberDto memberDto){//비밀번호 찾기
+
         for(int i=0; i<memberDtos.size();i++){
             if(memberDtos.get(i).getId().equals(memberDto.getId())){
                 if(memberDtos.get(i).getPhone().equals(memberDto.getPhone())){
+                    String npw = "";
+                    for(int j=0; j<6;j++) {
+                        npw += ((char)((int)(Math.random()*26)+97));
 
-                    //memberDtos.get(i).setPw();
+                    }
+                        memberDtos.get(i).setPw(npw);
+                   return memberDtos.get(i).getPw();
 
                 }
             }
@@ -76,4 +82,3 @@ public class MemberDao {
         return null;
     }
 }
-

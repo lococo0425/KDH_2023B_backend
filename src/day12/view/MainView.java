@@ -38,7 +38,7 @@ public class MainView { //cs
             }else if(ch==3){//아이디 찾기
                 MemberView.getInstance().searchId();
             }else if(ch==4){
-
+                MemberView.getInstance().searchPw();
             }
 
         }//we
