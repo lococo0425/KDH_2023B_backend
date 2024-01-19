@@ -7,7 +7,7 @@ public class 농협DTO extends 은행DTO{
         super(계좌번호, 계좌주, 입금액);
         this.포인트 = 포인트;
     }
-
+    public 농협DTO(){}
     public String get포인트() {
         return 포인트;
     }

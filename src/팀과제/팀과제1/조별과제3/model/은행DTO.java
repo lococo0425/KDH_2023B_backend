@@ -10,7 +10,7 @@ public class 은행DTO {
         this.계좌주 = 계좌주;
         this.입금액 = 입금액;
     }
-
+    public 은행DTO(){};
     public String get계좌번호() {
         return 계좌번호;
     }

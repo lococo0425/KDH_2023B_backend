@@ -7,7 +7,7 @@ public class 신한DTO extends 은행DTO {
         super(계좌번호, 계좌주, 입금액);
         this.마일리지 = 마일리지;
     }
-
+    public 신한DTO(){}
     public String get마일리지() {
         return 마일리지;
     }
