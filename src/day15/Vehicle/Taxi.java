@@ -1,4 +1,4 @@
-package day14.Vehicle;
+package day15.Vehicle;
 
 public class Taxi extends Vehicle{
     @Override

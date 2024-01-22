@@ -1,4 +1,4 @@
-package day14.Vehicle;
+package day15.Vehicle;
 
 public class DriverExample {
     public static void main(String[] args) {

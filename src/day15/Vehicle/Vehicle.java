@@ -1,4 +1,4 @@
-package day14.Vehicle;
+package day15.Vehicle;
 
 public class Vehicle {
     public void run(){
