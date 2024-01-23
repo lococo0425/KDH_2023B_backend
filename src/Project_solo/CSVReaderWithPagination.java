@@ -65,6 +65,8 @@ public class CSVReaderWithPagination {
         }
 
         scanner.close();
+
+
         CSVReaderWithPagination csvReaders = new CSVReaderWithPagination();
         List<MovieInfo> movieInfoList = csvReaders.readCSV();
 
