@@ -1,12 +1,23 @@
 package Project_solo;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
+
+
 
 public class CSVReaderWithPagination {
     private static final int ITEMS_PER_PAGE = 5;
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/maindb";
+    private static final String JDBC_USER = "root";
+    private static final String JDBC_PASSWORD = "1234";
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -54,7 +65,45 @@ public class CSVReaderWithPagination {
         }
 
         scanner.close();
+        CSVReaderWithPagination csvReaders = new CSVReaderWithPagination();
+        List<MovieInfo> movieInfoList = csvReaders.readCSV();
+
+        try(Connection connection=DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)){
+            String sql = "INSERT INTO movies (movie_id, movie_title, director, producer, income_company, " +
+                    "distribution_company, release_date, movie_type, movie_style, nationality, total_screen_count, " +
+                    "sales_price, viewing_number, seoul_sales_price, seoul_viewing_number, genre, grade, movie_subdivision) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                for (MovieInfo movieInfo : movieInfoList) {
+                    preparedStatement.setString(1, movieInfo.getMovieId().toString());
+                    preparedStatement.setString(2, movieInfo.getMovieName());
+                    preparedStatement.setString(3, movieInfo.getDirectorName());
+                    preparedStatement.setString(4, movieInfo.getMakerName());
+                    preparedStatement.setString(5, movieInfo.getIncomeCompanyName());
+                    preparedStatement.setString(6, movieInfo.getDistributionCompanyName());
+                    preparedStatement.setString(7, movieInfo.getOpeningDate());
+                    preparedStatement.setString(8, movieInfo.getMovieTypeName());
+                    preparedStatement.setString(9, movieInfo.getMovieStyleName());
+                    preparedStatement.setString(10, movieInfo.getNationalityName());
+                    preparedStatement.setInt(11, movieInfo.getTotalScreenCount());
+                    preparedStatement.setDouble(12, movieInfo.getSalesPrice());
+                    preparedStatement.setInt(13, movieInfo.getViewingNumber());
+                    preparedStatement.setDouble(14, movieInfo.getSeoulSalesPrice());
+                    preparedStatement.setInt(15, movieInfo.getSeoulViewingNumber());
+                    preparedStatement.setString(16, movieInfo.getGenreName());
+                    preparedStatement.setString(17, movieInfo.getGradeName());
+                    preparedStatement.setString(18, movieInfo.getMovieSubdivisionName());
+
+                    // 쿼리 실행
+                    preparedStatement.executeUpdate();
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
+
 
     public static void printMovies(List<MovieInfo> movieList, int page) {
         int start = page * ITEMS_PER_PAGE;
@@ -82,7 +131,7 @@ public class CSVReaderWithPagination {
     }
     public List<MovieInfo> readCSV() {
         List<MovieInfo> movieList = new ArrayList<>();
-        File csv = new File("C:\\Users\\504\\Desktop\\KDH_2023B_backend\\KDH_2023B_backend\\src\\Project_solo\\KC_KOBIS_BOX_OFFIC_MOVIE_INFO_202309.csv");
+        File csv = new File("C:\\Users\\504\\Desktop\\ezen_2023B_backend\\KDH_2023B_backend\\src\\Project_solo\\KC_KOBIS_BOX_OFFIC_MOVIE_INFO_202309.csv");
         BufferedReader br = null;
         String line = "";
 
@@ -135,10 +184,11 @@ public class CSVReaderWithPagination {
         String genreName = lineArr.length > 15 ? lineArr[15] : "";
         String gradeName = lineArr.length > 16 ? lineArr[16] : "";
         String movieSubdivisionName = lineArr.length > 17 ? lineArr[17] : "";
+        UUID movieId = UUID.randomUUID();
 
         return new MovieInfo(no, movieName, directorName, makerName, incomeCompanyName, distributionCompanyName,
                 openingDate, movieTypeName, movieStyleName, nationalityName, totalScreenCount, salesPrice,
-                viewingNumber, seoulSalesPrice, seoulViewingNumber, genreName, gradeName, movieSubdivisionName);
+                viewingNumber, seoulSalesPrice, seoulViewingNumber, genreName, gradeName, movieSubdivisionName, movieId);
     }
 
     private int parseInteger(String s) {
@@ -181,11 +231,14 @@ public class CSVReaderWithPagination {
         private String gradeName;
         private String movieSubdivisionName;
 
+        private UUID movieId;
+
+        
         public MovieInfo(int no, String movieName, String directorName, String makerName, String incomeCompanyName,
                          String distributionCompanyName, String openingDate, String movieTypeName, String movieStyleName,
                          String nationalityName, int totalScreenCount, double salesPrice, int viewingNumber,
                          double seoulSalesPrice, int seoulViewingNumber, String genreName, String gradeName,
-                         String movieSubdivisionName) {
+                         String movieSubdivisionName, UUID movieId) {
 
             this.no = no;
             this.movieName = movieName;
@@ -205,8 +258,160 @@ public class CSVReaderWithPagination {
             this.genreName = genreName;
             this.gradeName = gradeName;
             this.movieSubdivisionName = movieSubdivisionName;
+
         }
 
+        public int getNo() {
+            return no;
+        }
+
+        public void setNo(int no) {
+            this.no = no;
+        }
+
+        public String getMovieName() {
+            return movieName;
+        }
+
+        public void setMovieName(String movieName) {
+            this.movieName = movieName;
+        }
+
+        public String getDirectorName() {
+            return directorName;
+        }
+
+        public void setDirectorName(String directorName) {
+            this.directorName = directorName;
+        }
+
+        public String getMakerName() {
+            return makerName;
+        }
+
+        public void setMakerName(String makerName) {
+            this.makerName = makerName;
+        }
+
+        public String getIncomeCompanyName() {
+            return incomeCompanyName;
+        }
+
+        public void setIncomeCompanyName(String incomeCompanyName) {
+            this.incomeCompanyName = incomeCompanyName;
+        }
+
+        public String getDistributionCompanyName() {
+            return distributionCompanyName;
+        }
+
+        public void setDistributionCompanyName(String distributionCompanyName) {
+            this.distributionCompanyName = distributionCompanyName;
+        }
+
+        public String getOpeningDate() {
+            return openingDate;
+        }
+
+        public void setOpeningDate(String openingDate) {
+            this.openingDate = openingDate;
+        }
+
+        public String getMovieTypeName() {
+            return movieTypeName;
+        }
+
+        public void setMovieTypeName(String movieTypeName) {
+            this.movieTypeName = movieTypeName;
+        }
+
+        public String getMovieStyleName() {
+            return movieStyleName;
+        }
+
+        public void setMovieStyleName(String movieStyleName) {
+            this.movieStyleName = movieStyleName;
+        }
+
+        public String getNationalityName() {
+            return nationalityName;
+        }
+
+        public void setNationalityName(String nationalityName) {
+            this.nationalityName = nationalityName;
+        }
+
+        public int getTotalScreenCount() {
+            return totalScreenCount;
+        }
+
+        public void setTotalScreenCount(int totalScreenCount) {
+            this.totalScreenCount = totalScreenCount;
+        }
+
+        public double getSalesPrice() {
+            return salesPrice;
+        }
+
+        public void setSalesPrice(double salesPrice) {
+            this.salesPrice = salesPrice;
+        }
+
+        public int getViewingNumber() {
+            return viewingNumber;
+        }
+
+        public void setViewingNumber(int viewingNumber) {
+            this.viewingNumber = viewingNumber;
+        }
+
+        public double getSeoulSalesPrice() {
+            return seoulSalesPrice;
+        }
+
+        public void setSeoulSalesPrice(double seoulSalesPrice) {
+            this.seoulSalesPrice = seoulSalesPrice;
+        }
+
+        public int getSeoulViewingNumber() {
+            return seoulViewingNumber;
+        }
+
+        public void setSeoulViewingNumber(int seoulViewingNumber) {
+            this.seoulViewingNumber = seoulViewingNumber;
+        }
+
+        public String getGenreName() {
+            return genreName;
+        }
+
+        public void setGenreName(String genreName) {
+            this.genreName = genreName;
+        }
+
+        public String getGradeName() {
+            return gradeName;
+        }
+
+        public void setGradeName(String gradeName) {
+            this.gradeName = gradeName;
+        }
+
+        public String getMovieSubdivisionName() {
+            return movieSubdivisionName;
+        }
+
+        public void setMovieSubdivisionName(String movieSubdivisionName) {
+            this.movieSubdivisionName = movieSubdivisionName;
+        }
+
+        public UUID getMovieId() {
+            return movieId;
+        }
+
+        public void setMovieId(UUID movieId) {
+            this.movieId = movieId;
+        }
 
 
         @Override
@@ -232,5 +437,8 @@ public class CSVReaderWithPagination {
                     ", movieSubdivisionName='" + movieSubdivisionName + '\'' +
                     '}';
         }
+
+
+
     }
 }
