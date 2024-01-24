@@ -7,7 +7,7 @@ create table movie(
     producer VARCHAR(255),
     income_company VARCHAR(255),
     distribution_company VARCHAR(255),
-    release_date VARCHAR(10),
+    release_date VARCHAR(30),
     movie_type VARCHAR(255),
     movie_style VARCHAR(255),
     nationality VARCHAR(255),
@@ -22,3 +22,9 @@ create table movie(
     primary key(genre)
 );
 select * from movie;
+CREATE TABLE logs (
+    id INT not null AUTO_INCREMENT PRIMARY KEY,  #AUTO_INCREMENT -> 추가 될때 마다 자동으로 번호 추가 
+    log_message VARCHAR(255) NOT NULL
+);
+select * from logs;
+drop table log;

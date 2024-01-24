@@ -13,20 +13,79 @@ import java.util.UUID;
 
 
 public class CSVReaderWithPagination {
-    private static final int ITEMS_PER_PAGE = 5;
+    private static final int ITEMS_PER_PAGE = 5; // 페이지 설정
+    //DB 연동
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/maindb";
     private static final String JDBC_USER = "root";
     private static final String JDBC_PASSWORD = "1234";
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {//ms
         Scanner scanner = new Scanner(System.in);
         CSVReaderWithPagination csvReader = new CSVReaderWithPagination();
         List<MovieInfo> movieList = csvReader.readCSV();
 
         List<MovieInfo> selectedGenreMovies = new ArrayList<>();
 
-        printAllMovies(movieList);
+       // printAllMovies(movieList);  // 시작시 전체 페이지 출력
+
+        //DB 구성 부분
+        CSVReaderWithPagination csvReaders = new CSVReaderWithPagination();
+        List<MovieInfo> movieInfoList = csvReaders.readCSV();
+
+        try{
+            Connection connection=DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+            System.out.println("connection = " + connection);
+
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+
+            String sqld = "delete from movie";
+            connection.prepareStatement(sqld).executeUpdate();
+
+
+
+            String sql = "INSERT INTO movie (movie_id, movie_title, director, producer, income_company, " +
+                    "distribution_company, release_date, movie_type, movie_style, nationality, total_screen_count, " +
+                    "sales_price, viewing_number, seoul_sales_price, seoul_viewing_number, genre, grade, movie_subdivision) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            System.out.println("sql = " + sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            for (MovieInfo movieInfo : movieInfoList) {
+                System.out.println( movieInfo);
+
+                preparedStatement.setString(1, movieInfo.getMovieId().toString());
+                preparedStatement.setString(2, movieInfo.getMovieName());
+                preparedStatement.setString(3, movieInfo.getDirectorName());
+                preparedStatement.setString(4, movieInfo.getMakerName());
+                preparedStatement.setString(5, movieInfo.getIncomeCompanyName());
+                preparedStatement.setString(6, movieInfo.getDistributionCompanyName());
+                preparedStatement.setString(7, movieInfo.getOpeningDate());
+                preparedStatement.setString(8, movieInfo.getMovieTypeName());
+                preparedStatement.setString(9, movieInfo.getMovieStyleName());
+                preparedStatement.setString(10, movieInfo.getNationalityName());
+                preparedStatement.setInt(11, movieInfo.getTotalScreenCount());
+                preparedStatement.setDouble(12, movieInfo.getSalesPrice());
+                preparedStatement.setInt(13, movieInfo.getViewingNumber());
+                preparedStatement.setDouble(14, movieInfo.getSeoulSalesPrice());
+                preparedStatement.setInt(15, movieInfo.getSeoulViewingNumber());
+                preparedStatement.setString(16, movieInfo.getGenreName());
+                preparedStatement.setString(17, movieInfo.getGradeName());
+                preparedStatement.setString(18, movieInfo.getMovieSubdivisionName());
+
+                // 쿼리 실행
+                preparedStatement.executeUpdate();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            //오류 체크 구문
+            System.out.println("오류발견 "+e);
+        }
+
+
+        //페이지별 5개씩 보여주기
         int page = 0;
         while (true) {
             System.out.println("현재 페이지: " + page);
@@ -56,7 +115,7 @@ public class CSVReaderWithPagination {
                 System.out.print("장르를 입력하세요: ");
                 String selectedGenre = scanner.nextLine();
                 selectedGenreMovies = filterMoviesByGenre(movieList, selectedGenre);
-                page = 0; // 새로운 장르를 선택할 때 페이지를 초기화합니다.
+                page = 0; // 새로운 장르를 선택할 때 페이지를 초기화
             } else if (userInput == 2) {
                 printAllMovies(selectedGenreMovies);
             } else {
@@ -67,44 +126,7 @@ public class CSVReaderWithPagination {
         scanner.close();
 
 
-        CSVReaderWithPagination csvReaders = new CSVReaderWithPagination();
-        List<MovieInfo> movieInfoList = csvReaders.readCSV();
-
-        try(Connection connection=DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)){
-            String sql = "INSERT INTO movies (movie_id, movie_title, director, producer, income_company, " +
-                    "distribution_company, release_date, movie_type, movie_style, nationality, total_screen_count, " +
-                    "sales_price, viewing_number, seoul_sales_price, seoul_viewing_number, genre, grade, movie_subdivision) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-                for (MovieInfo movieInfo : movieInfoList) {
-                    preparedStatement.setString(1, movieInfo.getMovieId().toString());
-                    preparedStatement.setString(2, movieInfo.getMovieName());
-                    preparedStatement.setString(3, movieInfo.getDirectorName());
-                    preparedStatement.setString(4, movieInfo.getMakerName());
-                    preparedStatement.setString(5, movieInfo.getIncomeCompanyName());
-                    preparedStatement.setString(6, movieInfo.getDistributionCompanyName());
-                    preparedStatement.setString(7, movieInfo.getOpeningDate());
-                    preparedStatement.setString(8, movieInfo.getMovieTypeName());
-                    preparedStatement.setString(9, movieInfo.getMovieStyleName());
-                    preparedStatement.setString(10, movieInfo.getNationalityName());
-                    preparedStatement.setInt(11, movieInfo.getTotalScreenCount());
-                    preparedStatement.setDouble(12, movieInfo.getSalesPrice());
-                    preparedStatement.setInt(13, movieInfo.getViewingNumber());
-                    preparedStatement.setDouble(14, movieInfo.getSeoulSalesPrice());
-                    preparedStatement.setInt(15, movieInfo.getSeoulViewingNumber());
-                    preparedStatement.setString(16, movieInfo.getGenreName());
-                    preparedStatement.setString(17, movieInfo.getGradeName());
-                    preparedStatement.setString(18, movieInfo.getMovieSubdivisionName());
-
-                    // 쿼리 실행
-                    preparedStatement.executeUpdate();
-                }
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
+    }//me
 
 
     public static void printMovies(List<MovieInfo> movieList, int page) {
@@ -131,7 +153,7 @@ public class CSVReaderWithPagination {
         }
         return filteredMovies;
     }
-    public List<MovieInfo> readCSV() {
+    public List<MovieInfo> readCSV() { //CSV 읽어오기
         List<MovieInfo> movieList = new ArrayList<>();
         File csv = new File("C:\\Users\\504\\Desktop\\ezen_2023B_backend\\KDH_2023B_backend\\src\\Project_solo\\KC_KOBIS_BOX_OFFIC_MOVIE_INFO_202309.csv");
         BufferedReader br = null;
@@ -165,10 +187,10 @@ public class CSVReaderWithPagination {
     }
 
     private MovieInfo createMovieInfo(String[] lineArr) {
-        // Assuming the order of fields matches the CSV header
+
         int no = parseInteger(lineArr[0]);
 
-        // Check if there are enough elements in lineArr
+
         String movieName = lineArr.length > 1 ? lineArr[1] : "";
         String directorName = lineArr.length > 2 ? lineArr[2] : "";
         String makerName = lineArr.length > 3 ? lineArr[3] : "";
@@ -210,9 +232,6 @@ public class CSVReaderWithPagination {
         }
     }
 
-    private static class movieCateList{
-
-    }
     private static class MovieInfo {
         private int no;
         private String movieName;
@@ -257,9 +276,10 @@ public class CSVReaderWithPagination {
             this.viewingNumber = viewingNumber;
             this.seoulSalesPrice = seoulSalesPrice;
             this.seoulViewingNumber = seoulViewingNumber;
-            this.genreName = genreName;
+            this.genreName = genreName == null ? "미정" : genreName;
             this.gradeName = gradeName;
             this.movieSubdivisionName = movieSubdivisionName;
+            this.movieId = UUID.randomUUID();
 
         }
 
