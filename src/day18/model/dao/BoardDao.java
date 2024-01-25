@@ -1,4 +1,6 @@
 package day18.model.dao;
 
-public class BoardDao {
+public class BoardDao extends Dao{
+
+
 }
