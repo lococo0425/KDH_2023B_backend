@@ -55,4 +55,11 @@ public class MemberController {
         loginMno=0;
     }
 
+
+
+    //로그인Mno 가져오는 메소드생성
+    public int getLoginMno() {
+        return loginMno;
+    }
+
 }//ce

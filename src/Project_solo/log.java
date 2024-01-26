@@ -55,7 +55,7 @@ public class log {
         try(Connection connection = DriverManager.getConnection(url, username, userpassword)){
             String sql = "INSERT INTO logs (log_message) VALUES (?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-                preparedStatement.setString(1,logMessage);
+                preparedStatement.setString(2,logMessage);
                 preparedStatement.executeUpdate();
             }
 
