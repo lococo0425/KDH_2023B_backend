@@ -1,5 +1,6 @@
 package day18.controller;
 
+import day18.model.dao.BoardDao;
 import day18.model.dto.BoardDto;
 import day18.model.dto.CategoryDto;
 
