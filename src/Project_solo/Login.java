@@ -1,6 +1,10 @@
 
 package Project_solo;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +18,9 @@ public class Login {
     static boolean remove = false;
     static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+
+
         while (true){
             startText();
             int ch = scanner.nextInt();
@@ -30,6 +36,7 @@ public class Login {
                 }else  {
                     Member1 newMember1 = new Member1(memberNum,id, pw);
                     memberList.add(newMember1);
+                    String sql = "insert into clients values(?)";
 
 
                 }
@@ -99,8 +106,24 @@ public class Login {
                 System.out.println("회원을 출력합니다.");
                 System.out.println(memberList);
 
+
             }else{
                 System.out.println("잘못된 입력입니다.");
+            }
+
+
+            Connection connection = null;
+            try{
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/maindb","root","1234");
+                System.out.println("연동성공");
+                String sql = "insert into clients values(?,?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1,id);
+                preparedStatement.setString(2,pw);
+                preparedStatement.executeUpdate();
+            }catch (Exception e){
+                System.out.println("e = " + e);
             }
 
         }

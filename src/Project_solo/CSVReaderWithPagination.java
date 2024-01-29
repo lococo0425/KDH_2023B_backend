@@ -20,7 +20,7 @@ public class CSVReaderWithPagination {
     private static final String JDBC_PASSWORD = "1234";
 
 
-    public static void main(String[] args) {//ms
+    public static void main(String[] args) throws SQLException {//ms
         Scanner scanner = new Scanner(System.in);
         CSVReaderWithPagination csvReader = new CSVReaderWithPagination();
         List<MovieInfo> movieList = csvReader.readCSV();
@@ -117,6 +117,8 @@ public class CSVReaderWithPagination {
                 String selectedGenre = scanner.nextLine();
                 selectedGenreMovies = filterMoviesByGenre(movieList, selectedGenre);
                 page = 0; // 새로운 장르를 선택할 때 페이지를 초기화
+                log.logIntoSql(selectedGenre);
+
             } else if (userInput == 2) {
                 printAllMovies(selectedGenreMovies);
             } else {

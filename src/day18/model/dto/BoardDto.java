@@ -12,6 +12,16 @@ public class BoardDto {
     public BoardDto() {
     }
 
+    public BoardDto(int cno, int mno, int bno, String btitle, String bcontents, String bdate, long bview) {
+        this.cno = cno;
+        this.mno = mno;
+        this.bno = bno;
+        this.btitle = btitle;
+        this.bcontents = bcontents;
+        this.bdate = bdate;
+        this.bview = bview;
+    }
+
     public BoardDto(int cno, int mno, String btitle, String bcontents) {
         this.cno = cno;
         this.mno = mno;

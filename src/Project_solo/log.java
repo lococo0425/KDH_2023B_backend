@@ -13,6 +13,8 @@ import java.util.Scanner;
 public class log {
     private static final List<String> inputList = new ArrayList<>();
 
+
+
     public static void main(String[] args) {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -27,7 +29,7 @@ public class log {
                 inputList.add(savelog);
 
                 logInput("입력 값 : " +savelog);
-
+                logIntoSql("입력값 : " +savelog);
             }
             System.out.println(inputList);
 
@@ -47,14 +49,16 @@ public class log {
         }
     }
 
-    private  static void logIntoSql(String logMessage) throws SQLException {
+    public static void logIntoSql(String logMessage) throws SQLException {
         String url = "jdbc:mysql://localhost:3306/maindb";
         String username = "root";
         String userpassword = "1234";
 
         try(Connection connection = DriverManager.getConnection(url, username, userpassword)){
-            String sql = "INSERT INTO logs (log_message) VALUES (?)";
+
+            String sql = "INSERT INTO logs VALUES (?,?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setString(1,Login.id);
                 preparedStatement.setString(2,logMessage);
                 preparedStatement.executeUpdate();
             }

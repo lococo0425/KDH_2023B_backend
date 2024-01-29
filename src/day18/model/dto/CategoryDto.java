@@ -5,6 +5,7 @@ public class CategoryDto {
     private String cname;
 
     public CategoryDto(){}
+
     public CategoryDto( String cname){
         this.cname = cname;
     }
