@@ -17,8 +17,14 @@ public class Login {
     static boolean loginSuccess = false;
     static boolean remove = false;
     static Scanner scanner = new Scanner(System.in);
-
+    static Connection connection = null;
     public static void main(String[] args) throws SQLException {
+        try { // db 관련 선언 s
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/maindb", "root", "1234");
+        }catch (Exception e){
+            e.printStackTrace();
+        } // db관련 선언 e
 
 
         while (true){
@@ -34,9 +40,21 @@ public class Login {
                 if(idExists(id)) {
                     System.out.println("아이디가 존재합니다. 다른아이디를 사용하세요");
                 }else  {
+
                     Member1 newMember1 = new Member1(memberNum,id, pw);
                     memberList.add(newMember1);
-                    String sql = "insert into clients values(?)";
+
+                    try{
+                        System.out.println("연동성공");
+                        String sql = "insert into clients values(?,?)";
+                        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                        preparedStatement.setString(1,id);
+                        preparedStatement.setString(2,pw);
+                        preparedStatement.executeUpdate();
+                    }catch (Exception e){
+                        System.out.println("e = " + e);
+                    }
+
 
 
                 }
@@ -66,12 +84,32 @@ public class Login {
                 if (loginSuccess) {
                     System.out.println("로그인 성공!");
                     while (true){
+                    try{
+                        System.out.println("연동성공");
+                        String sql = "insert into logs (id) values (?)";
+                        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                        preparedStatement.setString(1,id);
+                        preparedStatement.executeUpdate();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     afterLoginText();
                     int afterch = scanner.nextInt();
                     scanner.nextLine();
 
                     if (afterch == 1) {
                         System.out.println("내가본 영화");
+                        try{
+                            System.out.println("연동성공");
+                            String sql = "select * from logs where id = ?";
+                            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                            preparedStatement.setString(1,id);
+                            preparedStatement.executeQuery();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     } else if (afterch == 2) {
                         System.out.println("추천영화입니다.");
                     } else if (afterch == 3) {
@@ -97,6 +135,16 @@ public class Login {
 
                     if(remove){
                         System.out.println("회원 탈퇴 성공");
+                        try{
+                            System.out.println("연동성공");
+                            String sql = "delete from clients where 아이디 = ?";
+                            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                            preparedStatement.setString(1,id);
+                            preparedStatement.executeUpdate();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }else{
                         System.out.println("아이디 비밀번호가 다릅니다.");
                     }
@@ -112,19 +160,6 @@ public class Login {
             }
 
 
-            Connection connection = null;
-            try{
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/maindb","root","1234");
-                System.out.println("연동성공");
-                String sql = "insert into clients values(?,?)";
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1,id);
-                preparedStatement.setString(2,pw);
-                preparedStatement.executeUpdate();
-            }catch (Exception e){
-                System.out.println("e = " + e);
-            }
 
         }
     }
