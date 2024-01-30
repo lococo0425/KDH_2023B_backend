@@ -42,6 +42,7 @@ public class Ps_MemberView {
         if(result){
             System.out.println("<로그인 성공>");
             Ps_MovieView.printMovie();
+
         }else {
             System.out.println("<로그인 실패>");
         }
