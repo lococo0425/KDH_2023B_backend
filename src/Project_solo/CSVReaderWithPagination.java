@@ -92,7 +92,7 @@ public class CSVReaderWithPagination {
             System.out.println("현재 페이지: " + page);
             printMovies(selectedGenreMovies, page);
 
-            System.out.println("이전 페이지: -1, 다음 페이지: 0, 특정 장르 보기: 1, 내가 선택한 장르 전체보기: 2, 종료: 3");
+            System.out.println("이전 페이지: -1, 다음 페이지: 0, 특정 장르 보기: 1, 내가 선택한 장르 전체보기: 2, 종료: 3, 영화 선택 : 4");
             int userInput = scanner.nextInt();
             scanner.nextLine();
 
@@ -121,7 +121,28 @@ public class CSVReaderWithPagination {
 
             } else if (userInput == 2) {
                 printAllMovies(selectedGenreMovies);
-            } else {
+            } else if (userInput ==4 ){
+                System.out.println("영화 정보를 입력하세요 (영화제목)");
+                String mn = scanner.nextLine();
+                System.out.println("해당 영화의 장르를 입력하세요 ");
+                String ge = scanner.nextLine();
+                try{
+                    Connection connection=DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+
+                    String sql = "insert into logs (moviename, moviegerne) VALUES (?,?)";
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1,mn);
+                    preparedStatement.setString(2,ge);
+                    preparedStatement.executeUpdate();
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }else {
                 System.out.println("올바르지 않은 입력입니다. 다시 시도하세요.");
             }
         }

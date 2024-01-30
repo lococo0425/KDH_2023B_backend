@@ -84,15 +84,20 @@ public class Login {
                 if (loginSuccess) {
                     System.out.println("로그인 성공!");
                     while (true){
+                        int i=0;
+                        Member1 loginMember = memberList.get(i);
+                        String logInId = loginMember.getId().toString();
                     try{
                         System.out.println("연동성공");
                         String sql = "insert into logs (id) values (?)";
                         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                        preparedStatement.setString(1,id);
+                        preparedStatement.setString(1,logInId);
                         preparedStatement.executeUpdate();
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+
+                    //CSVReaderWithPagination.main(args);  // csv를 활용한 영화 리스트 가져오기
 
                     afterLoginText();
                     int afterch = scanner.nextInt();
@@ -152,6 +157,14 @@ public class Login {
 
             }else if(ch==4) {
                 System.out.println("회원을 출력합니다.");
+                try{
+                    System.out.println("연동성공");
+                    String sql = "select * from clients";
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.executeQuery();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 System.out.println(memberList);
 
 

@@ -15,7 +15,7 @@ public class MemberView {
 
     Scanner scanner = MainView.getInstance().scanner;
     //1.회원가입
-    public void singup(){
+    public void signup(){
         //1.입력받기
         System.out.print("아이디 : ");     String id = scanner.next();
         System.out.print("비밀번호 : ");    String pw = scanner.next();
