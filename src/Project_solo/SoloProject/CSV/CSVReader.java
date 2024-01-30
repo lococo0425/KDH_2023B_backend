@@ -15,17 +15,12 @@ public class CSVReader {
     Scanner scanner = new Scanner(System.in);
 
 
-    public static void main(String[] args) {// main s
-    CSVReader csvReader = new CSVReader();
-    List<Ps_MovieDto> movielist = csvReader.readCSV();
-    for(int i=0; i<movielist.size(); i++) {
-        System.out.println(movielist.get(i));
-
-
-        // 여기서 부터 다시 시작
-    }
-
-
+        public static void main(String[] args) {// main s
+            CSVReader csvReader = new CSVReader();
+            List<Ps_MovieDto> movielist = csvReader.readCSV();
+            for(int i=0; i<movielist.size(); i++) {
+                System.out.println(movielist.get(i));
+        }
 
 
     }//main e
@@ -70,9 +65,7 @@ public class CSVReader {
 
 
     private Ps_MovieDto createMovieInfo(String[] lineArr) {
-
         int no = parseInteger(lineArr[0]);
-
 
         String movieName = lineArr.length > 1 ? lineArr[1] : "";
         String directorName = lineArr.length > 2 ? lineArr[2] : "";
@@ -96,6 +89,9 @@ public class CSVReader {
                 openingDate, movieTypeName, movieStyleName, nationalityName, totalScreenCount, salesPrice,
                 viewingNumber, seoulSalesPrice, seoulViewingNumber, genreName, gradeName, movieSubdivisionName);
     }
+
+
+
 
     private int parseInteger(String s) {
         try {
