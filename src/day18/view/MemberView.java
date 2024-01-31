@@ -9,7 +9,7 @@ public class MemberView {
 
 
     //싱글톤 만들기
-    private MemberView(){};
+    private MemberView(){}
     private static MemberView memberView = new MemberView();
     public static MemberView getInstance(){return memberView;}
 
